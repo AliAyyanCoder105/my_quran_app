@@ -47,15 +47,44 @@ class QuranHomeScreen extends StatelessWidget {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Color(0xFF0D47A1),
-              Color(0xFF1B5E20),
-              Color(0xFF2E7D32),
+              Color(0xFF0C1E3A), // Dark blue
+              Color(0xFF1A3A5F), // Medium blue
+              Color(0xFF2E5F8A), // Light blue
             ],
             stops: [0.1, 0.5, 0.9],
           ),
         ),
-        child: SafeArea(
-          child: QuranApp(),
+        child: Stack(
+          children: [
+            // Background decorative elements
+            Positioned(
+              top: -50,
+              right: -50,
+              child: Opacity(
+                opacity: 0.1,
+                child: Icon(
+                  Icons.mosque,
+                  size: 300,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            Positioned(
+              bottom: -30,
+              left: -30,
+              child: Opacity(
+                opacity: 0.1,
+                child: Icon(
+                  Icons.book,
+                  size: 250,
+                  color: Colors.white,
+                ),
+              ),
+            ),
+            SafeArea(
+              child: QuranApp(),
+            ),
+          ],
         ),
       ),
     );
