@@ -1,6 +1,5 @@
-import 'package:dart/surah_list.dart';
 import 'package:flutter/material.dart';
-
+import 'surah_list.dart';
 import 'namaz_time.dart';
 
 class QuranApp extends StatefulWidget {
@@ -54,6 +53,11 @@ class _QuranAppState extends State<QuranApp> with SingleTickerProviderStateMixin
     });
   }
 
+  static List<Widget> _widgetOptions = <Widget>[
+    SurahList(),
+    NamazTime(), // This will be shown inside the body
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,11 +65,6 @@ class _QuranAppState extends State<QuranApp> with SingleTickerProviderStateMixin
       appBar: AppBar(
         title: Text(
           _selectedIndex == 0 ? 'القرآن الكريم' : 'أوقات الصلاة',
-          style: TextStyle(
-            fontFamily: 'Scheherazade',
-            fontSize: 24,
-            fontWeight: FontWeight.bold,
-          ),
         ),
         centerTitle: true,
         flexibleSpace: Container(
@@ -85,21 +84,29 @@ class _QuranAppState extends State<QuranApp> with SingleTickerProviderStateMixin
             ],
           ),
         ),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.info_outline),
-            onPressed: () {
-              // Show about dialog
-            },
-          ),
-        ],
       ),
-      body: SlideTransition(
-        position: _slideAnimation,
-        child: FadeTransition(
-          opacity: _fadeAnimation,
-          child: Center(
-            child: _widgetOptions.elementAt(_selectedIndex),
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Color(0xFF0C1E3A),
+              Color(0xFF1A3A5F),
+              Color(0xFF2E5F8A),
+            ],
+            stops: [0.1, 0.5, 0.9],
+          ),
+        ),
+        child: SlideTransition(
+          position: _slideAnimation,
+          child: FadeTransition(
+            opacity: _fadeAnimation,
+            child: Center(
+              child: _widgetOptions.elementAt(_selectedIndex),
+            ),
           ),
         ),
       ),
@@ -115,13 +122,13 @@ class _QuranAppState extends State<QuranApp> with SingleTickerProviderStateMixin
               color: Colors.black.withOpacity(0.3),
               spreadRadius: 2,
               blurRadius: 10,
-              offset: Offset(0, 3),
+              offset: Offset(0, -3), // Shadow on top
             ),
           ],
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
         ),
         child: ClipRRect(
-          borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
           child: BottomNavigationBar(
             items: <BottomNavigationBarItem>[
               BottomNavigationBarItem(
@@ -153,7 +160,7 @@ class _QuranAppState extends State<QuranApp> with SingleTickerProviderStateMixin
             ],
             currentIndex: _selectedIndex,
             selectedItemColor: Colors.amber[300],
-            unselectedItemColor: Colors.grey[300],
+            unselectedItemColor: Colors.white70,
             selectedLabelStyle: TextStyle(fontWeight: FontWeight.bold),
             unselectedLabelStyle: TextStyle(fontWeight: FontWeight.normal),
             onTap: _onItemTapped,
@@ -164,9 +171,4 @@ class _QuranAppState extends State<QuranApp> with SingleTickerProviderStateMixin
       ),
     );
   }
-
-  static List<Widget> _widgetOptions = <Widget>[
-    SurahList(),
-    NamazTime(),
-  ];
 }

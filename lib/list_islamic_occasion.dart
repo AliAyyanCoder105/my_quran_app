@@ -1,0 +1,15 @@
+const List<Map<String, dynamic>> islamicEvents = [
+  {'month': 1, 'day': 1, 'name': 'Islamic New Year'},
+  {'month': 1, 'day': 10, 'name': 'Day of Ashura'},
+  {'month': 3, 'day': 12, 'name': 'Mawlid al-Nabi (Birth of the Prophet)'},
+  {'month': 7, 'day': 27, 'name': 'Isra and Mi\'raj'},
+  {'month': 8, 'day': 15, 'name': 'Shab-e-Barat (Nisf Sha\'ban)'},
+  {'month': 9, 'day': 1, 'name': 'Start of Ramadan'},
+  {'month': 9, 'day': 27, 'name': 'Laylat al-Qadr (Likely)'},
+  {'month': 10, 'day': 1, 'name': 'Eid al-Fitr'},
+  {'month': 12, 'day': 9, 'name': 'Day of Arafah'},
+  {'month': 12, 'day': 10, 'name': 'Eid al-Adha'},
+  {'month': 12, 'day': 11, 'name': 'Tashriq Day 1'},
+  {'month': 12, 'day': 12, 'name': 'Tashriq Day 2'},
+  {'month': 12, 'day': 13, 'name': 'Tashriq Day 3'},
+];
