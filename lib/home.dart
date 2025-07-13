@@ -11,7 +11,6 @@ import 'kalmaat.dart';
 
 import 'namaz_time.dart';
 
-import 'qibla_finder.dart';
 import 'tasbeeh_counter.dart';
 
 
@@ -236,7 +235,7 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
       {'icon': Icons.access_time_filled_outlined, 'title': 'Prayer Times', 'screen': NamazTimeScreen()},
       {'icon': Icons.star_outline, 'title': 'Six Kalmas', 'screen': KalmaScreen()},
       {'icon': Icons.shield_outlined, 'title': 'Masnoon Duain', 'screen': DuaScreen()},
-      {'icon': Icons.compass_calibration_outlined, 'title': 'Qibla Finder', 'screen': QiblaFinderScreen()},
+
       {'icon': Icons.fingerprint, 'title': 'Tasbeeh', 'screen': TasbeehCounterScreen()},
       {'icon': Icons.favorite_border, 'title': '99 Names', 'screen': AsmaUlHusnaScreen()},
       {'icon': Icons.calendar_month_outlined, 'title': 'Hijri Calendar', 'screen': IslamicCalendarScreen()},
