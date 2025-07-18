@@ -14,7 +14,7 @@ dependencies:
   get: ^4.7.2
 
   google_fonts: ^6.2.1
-  flutter_launcher_icons: ^0.14.1
+  flutter_launcher_icons: ^0.14.4
   intl: ^0.19.0
 
   font_awesome_flutter: ^10.8.0
@@ -49,24 +49,30 @@ flutter:
   uses-material-design: true
   assets:
     - assets/images/
-
 flutter_launcher_icons:
-  android: "launcher_icon"
+  android: true
   ios: true
-  image_path: "assets/images/ai.png"
-  min_sdk_android: 21 # android min sdk min:16, default 21
+  image_path: "assets/images/quran.png"
+  min_sdk_android: 21
+
   web:
     generate: true
-    image_path: "assets/images/ai.png"
-    background_color: "#hexcode"
-    theme_color: "#hexcode"
+    image_path: "assets/images/quran.png"
+    background_color: "#1D4B75"
+    theme_color: "#1D4B75"
+
   windows:
     generate: true
-    image_path: "assets/images/ai.png"
+    image_path: "assets/images/quran.png"
     icon_size: 48
+
+  macos:
+    generate: true
+    image_path: "assets/images/quran.png"
+
 flutter_native_splash:
 
-  color: "#808080"
+  color: "#1D4B75"
 
   android_12:
   # The image parameter sets the splash screen icon image.  If this parameter is not specified,
@@ -78,7 +84,7 @@ flutter_native_splash:
   # 768 pixels in diameter.  To fit a 1152x1152 image within a circle with a 768 diameter, simply
   # ensure that the most important design elements of your image are placed within a circular area
   # with a 768 diameter at the center of the 1152x1152 canvas.
-  image: assets/images/ai.png
+  image: assets/images/quran.png
 
   # Splash screen background color.
   #color: "#42a5f5"

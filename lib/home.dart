@@ -1,5 +1,6 @@
 import 'package:dart/quran.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:hijri/hijri_calendar.dart';
 import 'dart:math';
 
@@ -194,7 +195,12 @@ class _HomeScreenState extends State<HomeScreen> with SingleTickerProviderStateM
                     Text(
                       _verseOfTheDay['arabic']!,
                       textAlign: TextAlign.right,
-                      style: TextStyle(color: Colors.white, fontFamily: 'Scheherazade', fontSize: 26, height: 1.5),
+                      style: GoogleFonts.scheherazadeNew( // or GoogleFonts.notoNaskhArabic
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 24,
+                        height: 1.8, // Yeh line spacing improve karega
+                      ),
                     ),
                     SizedBox(height: 10),
                     Text(

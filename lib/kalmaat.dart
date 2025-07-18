@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class KalmaScreen extends StatefulWidget {
   @override
@@ -113,15 +114,17 @@ class _KalmaScreenState extends State<KalmaScreen> {
                           Divider(color: Colors.amber.withOpacity(0.5), height: 30),
                           _buildSectionTitle("Arabic"),
                           Text(
-                            kalma['arabic']!,
-                            textAlign: TextAlign.right,
-                            style: TextStyle(
+                            kalma["arabic"]!,
+                            style: GoogleFonts.scheherazadeNew( // or GoogleFonts.notoNaskhArabic
                               color: Colors.white,
-                              fontSize: 28,
-                              fontFamily: 'Scheherazade',
-                              height: 1.8,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 24,
+                              height: 1.8, // Yeh line spacing improve karega
                             ),
+                            textAlign: TextAlign.right,
+                            textDirection: TextDirection.rtl, // Yeh zaroori hai Arabic text ke liye
                           ),
+
                           SizedBox(height: 20),
                           _buildSectionTitle("Transliteration"),
                           Text(

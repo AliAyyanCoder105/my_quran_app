@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'model_99names.dart'; // Import the data file
 
@@ -79,7 +80,8 @@ class _AsmaUlHusnaScreenState extends State<AsmaUlHusnaScreen> with SingleTicker
       expandedHeight: 50,
       title: Opacity(
         opacity: (_scrollOffset > 150) ? 1 : 0, // Title appears on scroll
-        child: Text('Asma-ul-Husna'),
+        child: Text('Asma-ul-Husna',
+            style: GoogleFonts.notoNastaliqUrdu(fontWeight: FontWeight.bold, fontSize: 24)),
       ),
       centerTitle: true,
     );
@@ -93,14 +95,13 @@ class _AsmaUlHusnaScreenState extends State<AsmaUlHusnaScreen> with SingleTicker
           children: [
             Text(
               "أسماء الله الحسنى",
-              style: TextStyle(
-                  fontFamily: 'Scheherazade',
-                  color: Colors.white,
-                  fontSize: 48,
-                  fontWeight: FontWeight.bold,
-                  shadows: [Shadow(blurRadius: 10, color: Colors.black.withOpacity(0.5))]
-              ),
-            ),
+              style:
+              GoogleFonts.scheherazadeNew( // or GoogleFonts.notoNaskhArabic
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 24,
+                height: 1.8, // Yeh line spacing improve karega
+              ),),
             SizedBox(height: 8),
             Text(
               "The 99 Beautiful Names of Allah",
@@ -216,24 +217,18 @@ class _NameCard extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    nameData['arabic']!,
-                    style: TextStyle(
-                      fontFamily: 'Scheherazade',
-                      fontSize: 32,
+                    nameData["arabic"]!,
+                    style: GoogleFonts.scheherazadeNew( // or GoogleFonts.notoNaskhArabic
                       color: Colors.white,
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.bold,
+                      fontSize: 24,
+                      height: 1.8, // Yeh line spacing improve karega
                     ),
+                    textAlign: TextAlign.right,
+                    textDirection: TextDirection.rtl, // Yeh zaroori hai Arabic text ke liye
                   ),
-                  SizedBox(height: 4),
-                  Text(
-                    nameData['transliteration']!,
-                    style: TextStyle(
-                      fontSize: 16,
-                      color: Colors.amber[300],
-                      fontWeight: FontWeight.w500,
-                      letterSpacing: 1.1,
-                    ),
-                  ),
+
+
                   Divider(color: Colors.white.withOpacity(0.2), height: 20),
                   Text(
                     nameData['translation']!,

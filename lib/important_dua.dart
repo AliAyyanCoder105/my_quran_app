@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class DuaScreen extends StatelessWidget {
   final List<Map<String, String>> duaData = [
@@ -92,15 +93,17 @@ class DuaScreen extends StatelessWidget {
                     ),
                     Divider(color: Colors.amber.withOpacity(0.5), height: 25),
                     Text(
-                      dua['arabic']!,
-                      textAlign: TextAlign.right,
-                      style: TextStyle(
+                      dua["arabic"]!,
+                      style: GoogleFonts.scheherazadeNew( // or GoogleFonts.notoNaskhArabic
                         color: Colors.white,
+                        fontWeight: FontWeight.bold,
                         fontSize: 24,
-                        fontFamily: 'Scheherazade',
-                        height: 1.6,
+                        height: 1.8, // Yeh line spacing improve karega
                       ),
+                      textAlign: TextAlign.right,
+                      textDirection: TextDirection.rtl, // Yeh zaroori hai Arabic text ke liye
                     ),
+
                     SizedBox(height: 15),
                     Text(
                       dua['translation']!,
