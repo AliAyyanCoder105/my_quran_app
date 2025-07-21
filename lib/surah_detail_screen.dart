@@ -28,7 +28,9 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
     fetchSurah(widget.surahIndex + 1);
   }
 
+  // --- Fungsi untuk mengambil data Surah dari API ---
   Future<void> fetchSurah(int surahNumber) async {
+    // API endpoint yang menyediakan teks Arab, terjemahan Inggris, dan audio
     final url =
         'https://api.alquran.cloud/v1/surah/$surahNumber/editions/ar.alafasy,en.sahih';
     try {
@@ -37,6 +39,7 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
         final data = jsonDecode(response.body);
         final List<Map<String, String>> loadedSurah = [];
 
+        // Ekstrak data dari API
         final arabicAyahs = data['data'][0]['ayahs'];
         final englishAyahs = data['data'][1]['ayahs'];
 
@@ -44,7 +47,7 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
           loadedSurah.add({
             "arabic": arabicAyahs[i]['text'],
             "translation": englishAyahs[i]['text'],
-            "audio": arabicAyahs[i]['audio']
+            "audio": arabicAyahs[i]['audio'] // URL audio untuk setiap ayat
           });
         }
 
@@ -61,7 +64,6 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
       );
     }
   }
-
   @override
   void dispose() {
     audioPlayer.dispose();
@@ -69,6 +71,7 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
   }
 
   Future<void> playAyah(int index) async {
+
     if (currentPlayingAyah == index && isPlaying) {
       await audioPlayer.stop();
       setState(() {
@@ -92,9 +95,12 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
         isPlaying = true;
       });
 
+      // Mengatur kecepatan pemutaran
       await audioPlayer.setPlaybackRate(_playbackSpeed);
+      // Memutar audio dari URL
       await audioPlayer.play(UrlSource(ayahData["audio"]!));
 
+      // Listener untuk ketika audio selesai diputar
       audioPlayer.onPlayerComplete.listen((_) {
         setState(() {
           isPlaying = false;
@@ -113,6 +119,7 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
     }
   }
 
+  // --- Dialog untuk mengatur kecepatan pemutaran audio ---
   void _showPlaybackSpeedDialog() {
     showDialog(
       context: context,
@@ -176,8 +183,9 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Filter untuk fitur pencarian
     final filteredSurah = currentSurah.where((ayah) =>
-        ayah['arabic']!.contains(_searchText) ||
+    ayah['arabic']!.contains(_searchText) ||
         ayah['translation']!.toLowerCase().contains(_searchText.toLowerCase()));
 
     return Scaffold(
@@ -211,187 +219,194 @@ class _SurahDetailScreenState extends State<SurahDetailScreen> {
       body: currentSurah.isEmpty
           ? Center(child: CircularProgressIndicator(color: Colors.amber))
           : Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(12.0),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: 'Search translation...',
-                      hintStyle: TextStyle(color: Colors.white60),
-                      filled: true,
-                      fillColor: Colors.white12,
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide.none,
-                      ),
-                      prefixIcon: Icon(Icons.search, color: Colors.white70),
-                    ),
-                    style: TextStyle(color: Colors.white),
-                    onChanged: (value) {
-                      setState(() {
-                        _searchText = value;
-                      });
-                    },
-                  ),
+        children: [
+          // Widget untuk pencarian
+          Padding(
+            padding: const EdgeInsets.all(12.0),
+            child: TextField(
+              decoration: InputDecoration(
+                hintText: 'Search translation...',
+                hintStyle: TextStyle(color: Colors.white60),
+                filled: true,
+                fillColor: Colors.white12,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(12),
+                  borderSide: BorderSide.none,
                 ),
-                Expanded(
-                  child: ListView.separated(
-                    padding: EdgeInsets.all(16),
-                    itemCount: filteredSurah.length,
-                    separatorBuilder: (context, index) => Divider(
-                      color: Colors.white.withOpacity(0.2),
-                      height: 30,
-                    ),
-                    itemBuilder: (context, index) {
-                      final ayah = filteredSurah.elementAt(index);
-                      return AnimatedContainer(
-                        duration: Duration(milliseconds: 400),
-                        curve: Curves.easeInOut,
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.stretch,
+                prefixIcon: Icon(Icons.search, color: Colors.white70),
+              ),
+              style: TextStyle(color: Colors.white),
+              onChanged: (value) {
+                setState(() {
+                  _searchText = value;
+                });
+              },
+            ),
+          ),
+          // Daftar Ayat
+          Expanded(
+            child: ListView.separated(
+              padding: EdgeInsets.all(16),
+              itemCount: filteredSurah.length,
+              separatorBuilder: (context, index) => Divider(
+                color: Colors.white.withOpacity(0.2),
+                height: 30,
+              ),
+              itemBuilder: (context, index) {
+                final ayah = filteredSurah.elementAt(index);
+                return AnimatedContainer(
+                  duration: Duration(milliseconds: 400),
+                  curve: Curves.easeInOut,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                    children: [
+                      // Header untuk setiap ayat
+                      Container(
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 12, vertical: 8),
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              Color(0xFF1A3A5F).withOpacity(0.7),
+                              Color(0xFF2E5F8A).withOpacity(0.9),
+                            ],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                        child: Row(
+                          mainAxisAlignment:
+                          MainAxisAlignment.spaceBetween,
                           children: [
+                            // Nomor Ayat
                             Container(
-                              padding: EdgeInsets.symmetric(
-                                  horizontal: 12, vertical: 8),
+                              width: 30,
+                              height: 30,
                               decoration: BoxDecoration(
                                 gradient: LinearGradient(
                                   colors: [
-                                    Color(0xFF1A3A5F).withOpacity(0.7),
-                                    Color(0xFF2E5F8A).withOpacity(0.9),
+                                    Color(0xFFF9D423),
+                                    Color(0xFFFF4E50)
                                   ],
                                   begin: Alignment.topLeft,
                                   end: Alignment.bottomRight,
                                 ),
-                                borderRadius: BorderRadius.circular(8),
+                                shape: BoxShape.circle,
                               ),
-                              child: Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Container(
-                                    width: 30,
-                                    height: 30,
-                                    decoration: BoxDecoration(
-                                      gradient: LinearGradient(
-                                        colors: [
-                                          Color(0xFFF9D423),
-                                          Color(0xFFFF4E50)
-                                        ],
-                                        begin: Alignment.topLeft,
-                                        end: Alignment.bottomRight,
-                                      ),
-                                      shape: BoxShape.circle,
-                                    ),
-                                    child: Center(
-                                      child: Text(
-                                        (index + 1).toString(),
-                                        style: TextStyle(
-                                          fontSize: 14,
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
+                              child: Center(
+                                child: Text(
+                                  (index + 1).toString(),
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.bold,
                                   ),
-                                  if (ayah["audio"]!.isNotEmpty)
-                                    IconButton(
-                                      icon: AnimatedSwitcher(
-                                        duration: Duration(milliseconds: 300),
-                                        child: isPlaying &&
-                                                currentPlayingAyah == index
-                                            ? Icon(
-                                                Icons.pause_circle_filled,
-                                                key: ValueKey('pause'),
-                                                color: Colors.amber,
-                                                size: 32,
-                                              )
-                                            : Icon(
-                                                Icons.play_circle_fill,
-                                                key: ValueKey('play'),
-                                                color: Colors.amber,
-                                                size: 32,
-                                              ),
-                                      ),
-                                      onPressed: () => playAyah(index),
-                                    ),
-                                ],
+                                ),
                               ),
                             ),
-                            SizedBox(height: 15),
-                            Container(
-                              padding: EdgeInsets.all(16),
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: [
-                                    Color(0xFF1A3A5F).withOpacity(0.7),
-                                    Color(0xFF2E5F8A).withOpacity(0.9),
-                                  ],
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                ),
-                                borderRadius: BorderRadius.circular(12),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.2),
-                                    blurRadius: 6,
-                                    offset: Offset(0, 3),
+                            // Tombol Play/Pause
+                            if (ayah["audio"]!.isNotEmpty)
+                              IconButton(
+                                icon: AnimatedSwitcher(
+                                  duration: Duration(milliseconds: 300),
+                                  child: isPlaying &&
+                                      currentPlayingAyah == index
+                                      ? Icon(
+                                    Icons.pause_circle_filled,
+                                    key: ValueKey('pause'),
+                                    color: Colors.amber,
+                                    size: 32,
+                                  )
+                                      : Icon(
+                                    Icons.play_circle_fill,
+                                    key: ValueKey('play'),
+                                    color: Colors.amber,
+                                    size: 32,
                                   ),
-                                ],
-                              ),
-                              child:Text(
-                                ayah["arabic"]!,
-                                style: GoogleFonts.scheherazadeNew( // or GoogleFonts.notoNaskhArabic
-                                  color: Colors.white,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 24,
-                                  height: 1.8, // Yeh line spacing improve karega
                                 ),
-                                textAlign: TextAlign.right,
-                                textDirection: TextDirection.rtl, // Yeh zaroori hai Arabic text ke liye
+                                onPressed: () => playAyah(index),
                               ),
-
-                            ),
-                            SizedBox(height: 15),
-                            Container(
-                              padding: EdgeInsets.all(16),
-                              decoration: BoxDecoration(
-                                gradient: LinearGradient(
-                                  colors: [
-                                    Color(0xFF1A3A5F).withOpacity(0.7),
-                                    Color(0xFF2E5F8A).withOpacity(0.9),
-                                  ],
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                ),
-                                borderRadius: BorderRadius.circular(12),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.2),
-                                    blurRadius: 6,
-                                    offset: Offset(0, 3),
-                                  ),
-                                ],
-                              ),
-                              child: Text(
-                                ayah["translation"] ??
-                                    "Translation not available",
-                                style: TextStyle(
-                                  fontSize:
-                                      MediaQuery.of(context).size.width * 0.045,
-                                  color: Colors.white.withOpacity(0.9),
-                                  fontFamily: 'Poppins',
-                                  height: 1.5,
-                                ),
-                              ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(height: 15),
+                      // Teks Arab
+                      Container(
+                        padding: EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              Color(0xFF1A3A5F).withOpacity(0.7),
+                              Color(0xFF2E5F8A).withOpacity(0.9),
+                            ],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                          borderRadius: BorderRadius.circular(12),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.2),
+                              blurRadius: 6,
+                              offset: Offset(0, 3),
                             ),
                           ],
                         ),
-                      );
-                    },
+                        child:Text(
+                          ayah["arabic"]!,
+                          style: GoogleFonts.scheherazadeNew(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 24,
+                            height: 1.8,
+                          ),
+                          textAlign: TextAlign.right,
+                          textDirection: TextDirection.rtl,
+                        ),
+
+                      ),
+                      SizedBox(height: 15),
+                      // Terjemahan
+                      Container(
+                        padding: EdgeInsets.all(16),
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              Color(0xFF1A3A5F).withOpacity(0.7),
+                              Color(0xFF2E5F8A).withOpacity(0.9),
+                            ],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
+                          ),
+                          borderRadius: BorderRadius.circular(12),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.2),
+                              blurRadius: 6,
+                              offset: Offset(0, 3),
+                            ),
+                          ],
+                        ),
+                        child: Text(
+                          ayah["translation"] ??
+                              "Translation not available",
+                          style: TextStyle(
+                            fontSize:
+                            MediaQuery.of(context).size.width * 0.045,
+                            color: Colors.white.withOpacity(0.9),
+                            fontFamily: 'Poppins',
+                            height: 1.5,
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
-                ),
-              ],
+                );
+              },
             ),
+          ),
+        ],
+      ),
     );
   }
 }
